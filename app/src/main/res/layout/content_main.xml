@@ -8,22 +8,46 @@
     tools:context="id.sch.smktelkom_mlg.pw.utjournal.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jeorijgoijtoigjoritjgorjtohjortjhorjtohjortjhoirtjoihjrotjhoirtjhoirjtohjrotjhorjtohijrotihjortjhorjtohjrothjoitjoij4tojhortjhortjh"
-        app:layout_constraintVertical_bias="1.0" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="jeorijgoijtoigjoritjgorjtohjortjhorjtohjortjhoirtjoihjrotjhoirtjhoirjtohjrotjhorjtohijrotihjortjhorjtohjrothjoitjoij4tojhortjhortjh"
-        app:layout_constraintVertical_bias="1.0" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/layout_border"
+            android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="jeorijgoijtoigjoritjgorjtohjortjhorjtohjortjhoirtjoihjrotjhoirtjhoirjtohjrotjhorjtohijrotihjortjhorjtohjrothjoitjoij4tojhortjhortjh"
-        app:layout_constraintVertical_bias="1.0" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Judul Journal"
+                    android:textColor="#4a4a4a"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="1-Jan-2018 to 3-Jan-2017"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

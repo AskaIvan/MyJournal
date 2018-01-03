@@ -22,27 +22,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Appbar = findViewById(R.id.appbar);
-        collTolbar = findViewById(R.id.ctolbar);
-        toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
 
 
-        Appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) > 200) {
-                    ExpandedAction = false;
-                    collTolbar.setTitle("Test One");
-                    invalidateOptionsMenu();
-                } else {
-                    ExpandedAction = true;
-                    collTolbar.setTitle("Test Two");
-                    invalidateOptionsMenu();
-                }
-            }
-        });
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
