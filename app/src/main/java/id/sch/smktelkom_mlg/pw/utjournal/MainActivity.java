@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference users1;
 
     EditText edtusername,edtpassword, edtemail, edtbranch, edtarea, edtnrp;
-    Button btnSignUp;
+    Button btnSignUp, btnToLogin;
 
     AppBarLayout Appbar;
     CollapsingToolbarLayout collTolbar;
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
         edtnrp = (EditText) findViewById(R.id.edtnrp);
 
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        btnToLogin = (Button) findViewById(R.id.btnToLogin);
+
+        btnToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent s = new Intent(getApplicationContext(), login2Activity.class);
+                startActivity(s);
+            }
+        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
