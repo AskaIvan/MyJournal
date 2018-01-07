@@ -8,17 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import id.sch.smktelkom_mlg.pw.utjournal.Model.User;
 
-public class login2Activity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference users1;
@@ -31,7 +29,7 @@ public class login2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
 
         database = FirebaseDatabase.getInstance();
         users1 = database.getReference("Users1");
@@ -66,16 +64,16 @@ public class login2Activity extends AppCompatActivity {
                     if(!username.isEmpty()){
                         User login = dataSnapshot.child(username).getValue(User.class);
                         if (login.getPassword().equals(password)){
-                            Toast.makeText(login2Activity.this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
                             Intent s = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(s);
                         }
                         else {
-                            Toast.makeText(login2Activity.this, "Password Salah!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Password Salah!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
-                        Toast.makeText(login2Activity.this, "Pengguna Belum Terdaftar!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Pengguna Belum Terdaftar!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

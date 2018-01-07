@@ -1,4 +1,47 @@
 <resources>
-    <string name="app_name">UTJournal</string>
+    <string name="app_name">Yournal</string>
     <string name="action_settings">Settings</string>
+
+    <string name="email">Email Address</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="nrp">NRP</string>
+    <string name="branch">Branch</string>
+    <string name="area">Area</string>
+
+    <string name="signup">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="login">Log In</string>
+    <string name="account">Create Account</string>
+
+    <string name="add">Add Journal</string>
+    <string name="codejob">Code Job</string>
+    <string name="category">Category</string>
+    <string name="codecat">Code Category</string>
+    <string name="activity">Activity</string>
+    <string name="description">Description</string>
+    <string name="sapsomp">SAP SOMP</string>
+    <string name="month">Month</string>
+    <string name="start">Start Date</string>
+    <string name="end">End Date</string>
+    <string name="hours">Hours</string>
+    <string name="venue">Venue</string>
+    <string name="vendor">Vendor</string>
+    <string name="unittype">Unit Type</string>
+    <string name="remark">Remark</string>
+
+    <string-array name="month">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </string-array>
 </resources>
