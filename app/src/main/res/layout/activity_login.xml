@@ -1,180 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.sch.smktelkom_mlg.pw.utjournal.loginActivity">
+    tools:context="id.sch.smktelkom_mlg.pw.utjournal.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.071"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:id="@+id/textView"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <EditText
-        android:id="@+id/edtnrp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:hint="NRP"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="24dp"
+            app:cardCornerRadius="4dp">
 
-    <EditText
-        android:id="@+id/edtbranch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Branch"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtnrp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="24dp"
 
-    <EditText
-        android:id="@+id/edtarea"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Area"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtbranch"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+                android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edtemail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="Email Address"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtarea"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="Sign Up"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/edtusername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Username"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtemail"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+                <View
+                    android:layout_width="124dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray" />
 
-    <EditText
-        android:id="@+id/edtpassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="Password"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtusername"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+                <EditText
+                    android:id="@+id/edtemail"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
-        android:text="REGISTER NOW"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtpassword"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+                <EditText
+                    android:id="@+id/edtusername"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Your Name"
+                    android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btnToLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="Log In"
-        android:background="@null"
-        android:textColor="#000000"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSignUp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"/>
+                <EditText
+                    android:id="@+id/edtpassword"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
 
+                <EditText
+                    android:id="@+id/edtnrp"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="NRP"
+                    android:inputType="number" />
 
+                <EditText
+                    android:id="@+id/edtbranch"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Branch"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/edtarea"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Area"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/btnSignUp"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/buttonstyle"
+                    android:text="REGISTER NOW"
+                    android:textColor="#fff" />
+
+                <Button
+                    android:id="@+id/btnToLogin"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@null"
+                    android:text="Log In"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </android.support.v4.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
 </android.support.constraint.ConstraintLayout>
-</ScrollView>

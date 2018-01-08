@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#FFCA28</color>
     <color name="colorAccent">#FF4081</color>
     <color name="primary">#FF8F00</color>
+    <color name="actionbar">#00000000</color>
+    <color name="azure">#f1f5f8</color>
+    <color name="fab1">#4caf50</color>
+    <color name="fab2">#F44336</color>
 </resources>

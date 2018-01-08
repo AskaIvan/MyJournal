@@ -17,8 +17,8 @@ public class User {
 
     }
 
-    public User( String username, String password, String email, String branch, String area, String nrp){
-        this.username = username;
+    public User(String username, String password, String email, String branch, String area, String nrp) {
+        //this.username = username;
         this.password = password ;
         this.email = email;
         this.branch = branch;
