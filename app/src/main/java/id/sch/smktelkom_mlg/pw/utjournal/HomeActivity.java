@@ -18,7 +18,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private ProgressBar progressBar;
-    private FloatingActionButton fab_plus, fab_logout, fab_create;
+    private FloatingActionButton fab_plus, fab_logout, fab_create, fab_editacc;
     private Animation fabOpen, fabClose, fabRClockwise, fabRantiClockwise;
 
     @Override
@@ -28,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
         fab_plus = findViewById(R.id.fab_plus);
         fab_logout = findViewById(R.id.fab_logout);
         fab_create = findViewById(R.id.fab_create);
+        fab_editacc = findViewById(R.id.fab_editacc);
 
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
@@ -58,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (isOpen) {
                     fab_create.startAnimation(fabClose);
                     fab_logout.startAnimation(fabClose);
+                    fab_editacc.startAnimation(fabClose);
                     fab_plus.startAnimation(fabRantiClockwise);
                     fab_create.setClickable(false);
                     fab_logout.setClickable(false);
@@ -65,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     fab_create.startAnimation(fabOpen);
                     fab_logout.startAnimation(fabOpen);
+                    fab_editacc.startAnimation(fabOpen);
                     fab_plus.startAnimation(fabRClockwise);
                     fab_create.setClickable(true);
                     fab_logout.setClickable(true);
