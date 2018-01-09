@@ -44,4 +44,18 @@
         <item>NOV</item>
         <item>DEC</item>
     </string-array>
+
+    <string-array name="venue">
+        <item>TTA BLP</item>
+        <item>TTA JKT</item>
+        <item>TTA SBY</item>
+        <item>TTA SMG</item>
+        <item>TTA SMD</item>
+    </string-array>
+
+    <string-array name="vendor">
+        <item>UT BLP</item>
+        <item>UT HO</item>
+        <item>UT KWN</item>
+    </string-array>
 </resources>
