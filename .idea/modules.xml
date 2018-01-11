@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\Sekolah\ProjectAndroid\UTJournal\MyJournal2.iml" filepath="D:\Sekolah\ProjectAndroid\UTJournal\MyJournal2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UTJournal.iml" filepath="$PROJECT_DIR$/UTJournal.iml" />
-      <module fileurl="file://E:\SEKOLAH\telkom_school\XII RPL 6\PROJEK WORK\MyJournal2\UTJournal.iml" filepath="E:\SEKOLAH\telkom_school\XII RPL 6\PROJEK WORK\MyJournal2\UTJournal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyJournal.iml" filepath="$PROJECT_DIR$/MyJournal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
