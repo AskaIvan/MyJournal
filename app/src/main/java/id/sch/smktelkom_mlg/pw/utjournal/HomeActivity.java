@@ -37,8 +37,6 @@ public class HomeActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -46,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
-                    Intent intent = new Intent(HomeActivity.this, login2Activity.class);
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
@@ -79,6 +77,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 signOut();
+            }
+        });
+        fab_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String get_current_user = auth.getCurrentUser().getUid();
+                Intent intent = new Intent(HomeActivity.this, AddActivity.class);
+                intent.putExtra("user_idnya", get_current_user);
+                startActivity(intent);
             }
         });
     }
