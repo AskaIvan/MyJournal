@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     //firebase db
     private FirebaseDatabase database;
     private FirebaseAuth auth;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
     private EditText edtusername, edtpassword, edtemail, edtbranch, edtarea, edtnrp;
     private Button btnSignUp, btnToLogin;
     private AppBarLayout Appbar;
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         edtbranch = findViewById(R.id.edtbranch);
         edtarea = findViewById(R.id.edtarea);
         edtnrp = findViewById(R.id.edtnrp);
-        progressBar = findViewById(R.id.progressBar);
+        //progressBar = findViewById(R.id.progressBar);
         mProgress = new ProgressDialog(this);
 
         imgBtn = findViewById(R.id.imgprofile);
@@ -163,66 +162,14 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
-
-                /*users1.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child(user.getEmail()).exists())
-                            Toast.makeText(MainActivity.this, "Email Sudah Ada!", Toast.LENGTH_SHORT).show();
-                        else {
-                            final String email = edtemail.getText().toString().trim();
-                            final String password = edtpassword.getText().toString().trim();
-                            auth.createUserWithEmailAndPassword(email, password)
-                                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            Toast.makeText(MainActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            // If sign in fails, display a message to the user. If sign in succeeds
-                                            // the auth state listener will be notified and logic to handle the
-                                            // signed in user can be handled in the listener.
-                                            if (!task.isSuccessful()) {
-                                                Toast.makeText(MainActivity.this, "Authentication failed." + task.getException(),
-                                                        Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                                                finish();
-                                            }
-                                        }
-                                    });
-                            users1.child(user.getUsername()).setValue(user);
-                            Toast.makeText(MainActivity.this, "Registrasi Sukses!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //custom code
-                    }
-                });*/
-                /*users1.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child(user.getEmail()).exists())
-                            Toast.makeText(MainActivity.this, "Email Sudah Ada!", Toast.LENGTH_SHORT).show();
-                        else {
-                            users1.child(user.getUsername()).setValue(user);
-                            Toast.makeText(MainActivity.this, "Registrasi Sukses!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //custom code
-                    }
-                });*/
+                //progressBar.setVisibility(View.VISIBLE);
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Toast.makeText(MainActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
+
+                                //progressBar.setVisibility(View.GONE);
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
@@ -264,20 +211,6 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         });
-
-
-
-
-
-
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     @Override
@@ -302,9 +235,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
-    }
+    //@Override
+    //protected void onResume() {
+    //   super.onResume();
+    //progressBar.setVisibility(View.GONE);
+    //}
 }

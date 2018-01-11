@@ -37,7 +37,7 @@
                     android:textStyle="bold" />
 
                 <View
-                    android:layout_width="124dp"
+                    android:layout_width="96dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"

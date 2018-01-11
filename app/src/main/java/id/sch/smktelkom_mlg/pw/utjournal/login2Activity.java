@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,12 +24,12 @@ import com.google.firebase.database.ValueEventListener;
 public class login2Activity extends AppCompatActivity {
 
     FirebaseDatabase database;
-    ProgressBar progressBar;
     private FirebaseAuth auth;
     private DatabaseReference users1;
 
     private EditText edtpassword, edtemail;
     private Button btnLogin, btnToSignUp;
+    private ProgressDialog mProgress;
 
 
     @Override
@@ -49,7 +49,7 @@ public class login2Activity extends AppCompatActivity {
         edtpassword = findViewById(R.id.edtpassword);
         edtemail = findViewById(R.id.edtemail);
         btnLogin = findViewById(R.id.btnLogin);
-        progressBar = findViewById(R.id.progressBar);
+        mProgress = new ProgressDialog(this);
 
         btnToSignUp = findViewById(R.id.btnToSignUp);
 
@@ -82,9 +82,6 @@ public class login2Activity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password minimum 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                progressBar.setVisibility(View.VISIBLE);
-
                 //authenticate user
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(login2Activity.this, new OnCompleteListener<AuthResult>() {
@@ -93,11 +90,13 @@ public class login2Activity extends AppCompatActivity {
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
-                                progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(login2Activity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                 } else {
+                                    mProgress.setMessage("Loging In ...");
+                                    mProgress.show();
                                     checkUserExist();
+                                    mProgress.dismiss();
                                     Intent intent = new Intent(login2Activity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
