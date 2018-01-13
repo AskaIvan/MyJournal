@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class login2Activity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     private FirebaseAuth auth;
@@ -38,7 +38,7 @@ public class login2Activity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(login2Activity.this, HomeActivity.class));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
         setContentView(R.layout.activity_login2);
@@ -84,20 +84,19 @@ public class login2Activity extends AppCompatActivity {
                 }
                 //authenticate user
                 auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(login2Activity.this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(login2Activity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                 } else {
                                     mProgress.setMessage("Loging In ...");
                                     mProgress.show();
                                     checkUserExist();
-                                    mProgress.dismiss();
-                                    Intent intent = new Intent(login2Activity.this, HomeActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -113,12 +112,12 @@ public class login2Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(user_id)) {
-                    Intent intent = new Intent(login2Activity.this, HomeActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(login2Activity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                 }
             }
 
