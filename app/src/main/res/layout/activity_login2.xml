@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.sch.smktelkom_mlg.pw.utjournal.login2Activity">
+    tools:context="id.sch.smktelkom_mlg.pw.utjournal.LoginActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:textStyle="bold" />
 
                 <View
-                    android:layout_width="124dp"
+                    android:layout_width="96dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"

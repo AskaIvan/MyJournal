@@ -15,20 +15,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
 
-    /*Firebase
-      private FirebaseDatabase database;
-      private DatabaseReference journals;
-     */
-    private DatabaseReference journal;
+    private DatabaseReference journal, myDatabaseUser;
     private FirebaseDatabase database;
 
     private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtdescription, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark;
@@ -37,6 +38,7 @@ public class AddActivity extends AppCompatActivity {
     private int mYear, mMonth, mDay;
     private ProgressDialog mProgress;
     private FirebaseAuth auth;
+    private FirebaseUser CUser;
     private FirebaseAuth.AuthStateListener authListener;
 
     private String mpost_key = null;
@@ -46,10 +48,16 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        database = FirebaseDatabase.getInstance();
-        journal = FirebaseDatabase.getInstance().getReference().child("journal");
 
-        mpost_key = getIntent().getExtras().getString("user_idnya");
+
+        auth = FirebaseAuth.getInstance();
+        CUser = auth.getCurrentUser();
+
+        database = FirebaseDatabase.getInstance();
+        journal = database.getReference().child("journal");
+
+        myDatabaseUser = FirebaseDatabase.getInstance().getReference().child("users").child(CUser.getUid());
+
 
         edtcodejob = findViewById(R.id.edtcodejob);
         edtcategory = findViewById(R.id.edtcategory);
@@ -70,7 +78,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         mProgress = new ProgressDialog(this);
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -164,7 +172,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startSaving();
-                /*final Journal journal = new Journal(edtcodejob.getText().toString(),
+                /*final Journal journals = new Journal(edtcodejob.getText().toString(),
                         edtcategory.getText().toString(),
                         edtcodecategory.getText().toString(),
                         edtactivity.getText().toString(),
@@ -179,11 +187,16 @@ public class AddActivity extends AppCompatActivity {
                         edtunittype.getText().toString(),
                         edtremark.getText().toString());
 
-                journals.addListenerForSingleValueEvent(new ValueEventListener() {
+                journal.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        journals.child(journal.getCodejob()).setValue(journal);
-                        Toast.makeText(AddActivity.this,"Journal Added!", Toast.LENGTH_SHORT).show();
+                        String user_id = auth.getCurrentUser().getUid();
+                        journal.orderByChild("users").equalTo(auth.getCurrentUser().getUid()).;
+                        Toast.makeText(AddActivity.this,"Isolah Cuk!!!!", Toast.LENGTH_SHORT).show();
+                        Intent main = new Intent(AddActivity.this, HomeActivity.class);
+                        main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(main);
+                        finish();
                     }
 
                     @Override
@@ -197,52 +210,68 @@ public class AddActivity extends AppCompatActivity {
 
     private void startSaving() {
         mProgress.setMessage("Saving ... ");
-        mProgress.show();
 
-        String mCodejob = edtcodejob.getText().toString().trim();
-        String mCatgeory = edtcategory.getText().toString().trim();
-        String mCodecategory = edtcodecategory.getText().toString().trim();
-        String mActivity = edtactivity.getText().toString().trim();
-        String mDescription = edtdescription.getText().toString().trim();
-        String mSapsomp = edtsapsomp.getText().toString().trim();
-        String mMonth = spinnerMonth.getSelectedItem().toString().trim();
-        String mStart = edtstart.getText().toString().trim();
-        String mEnd = edtend.getText().toString().trim();
-        String mHours = edthours.getText().toString().trim();
-        String mVenue = spinnerVenue.getSelectedItem().toString().trim();
-        String mVendor = spinnerVendor.getSelectedItem().toString().trim();
-        String mUnittype = edtunittype.getText().toString().trim();
-        String mRemark = edtremark.getText().toString().trim();
+        final String mCodejob = edtcodejob.getText().toString().trim();
+        final String mCatgeory = edtcategory.getText().toString().trim();
+        final String mCodecategory = edtcodecategory.getText().toString().trim();
+        final String mActivity = edtactivity.getText().toString().trim();
+        final String mDescription = edtdescription.getText().toString().trim();
+        final String mSapsomp = edtsapsomp.getText().toString().trim();
+        final String mMonth = spinnerMonth.getSelectedItem().toString().trim();
+        final String mStart = edtstart.getText().toString().trim();
+        final String mEnd = edtend.getText().toString().trim();
+        final String mHours = edthours.getText().toString().trim();
+        final String mVenue = spinnerVenue.getSelectedItem().toString().trim();
+        final String mVendor = spinnerVendor.getSelectedItem().toString().trim();
+        final String mUnittype = edtunittype.getText().toString().trim();
+        final String mRemark = edtremark.getText().toString().trim();
 
         if (!TextUtils.isEmpty(mCodejob) && !TextUtils.isEmpty(mCatgeory) && !TextUtils.isEmpty(mCodecategory) && !TextUtils.isEmpty(mActivity) && !TextUtils.isEmpty(mDescription) &&
                 !TextUtils.isEmpty(mSapsomp) && !TextUtils.isEmpty(mMonth) && !TextUtils.isEmpty(mStart) && !TextUtils.isEmpty(mEnd) && !TextUtils.isEmpty(mHours) && !TextUtils.isEmpty(mVenue) &&
                 !TextUtils.isEmpty(mVendor) && !TextUtils.isEmpty(mUnittype) && !TextUtils.isEmpty(mRemark)) {
+            mProgress.show();
 
-            String user_id = auth.getCurrentUser().getUid().toString();
+            final DatabaseReference newJournal = journal.push();
 
-            DatabaseReference newJournal = journal.child(user_id).push();
-            newJournal.child("codejob").setValue(mCodejob);
-            newJournal.child("category").setValue(mCatgeory);
-            newJournal.child("codecategory").setValue(mCodecategory);
-            newJournal.child("activity").setValue(mActivity);
-            newJournal.child("description").setValue(mDescription);
-            newJournal.child("sapsomp").setValue(mSapsomp);
-            newJournal.child("month").setValue(mMonth);
-            newJournal.child("start").setValue(mStart);
-            newJournal.child("end").setValue(mEnd);
-            newJournal.child("hours").setValue(mHours);
-            newJournal.child("venue").setValue(mVenue);
-            newJournal.child("vendor").setValue(mVendor);
-            newJournal.child("unittype").setValue(mUnittype);
-            newJournal.child("remark").setValue(mRemark);
+            myDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-            mProgress.dismiss();
-            Toast.makeText(AddActivity.this, "Menambah data iso", Toast.LENGTH_SHORT).show();
-            Intent main = new Intent(AddActivity.this, HomeActivity.class);
-            main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(main);
-            finish();
+                    newJournal.child("codejob").setValue(mCodejob);
+                    newJournal.child("category").setValue(mCatgeory);
+                    newJournal.child("codecategory").setValue(mCodecategory);
+                    newJournal.child("activity").setValue(mActivity);
+                    newJournal.child("description").setValue(mDescription);
+                    newJournal.child("sapsomp").setValue(mSapsomp);
+                    newJournal.child("month").setValue(mMonth);
+                    newJournal.child("start").setValue(mStart);
+                    newJournal.child("end").setValue(mEnd);
+                    newJournal.child("hours").setValue(mHours);
+                    newJournal.child("venue").setValue(mVenue);
+                    newJournal.child("vendor").setValue(mVendor);
+                    newJournal.child("unittype").setValue(mUnittype);
+                    newJournal.child("remark").setValue(mRemark);
+                    newJournal.child("uid").setValue(CUser.getUid());
+                    newJournal.child("name").setValue(dataSnapshot.child("username").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(AddActivity.this, "Menambah data iso", Toast.LENGTH_SHORT).show();
+                                Intent main = new Intent(AddActivity.this, HomeActivity.class);
+                                startActivity(main);
+                                finish();
+                            }
+                        }
+                    });
 
+                    mProgress.dismiss();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
         } else {
             Toast.makeText(AddActivity.this, "ora isooo!!!!",

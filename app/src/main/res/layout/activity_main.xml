@@ -61,12 +61,12 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.CardView
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="300dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="200dp"
-                    android:background="#fff">
+                    card_view:cardBackgroundColor="#fff">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -145,7 +145,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/journal_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
@@ -173,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="1-Jan-2018 to 3-Jan-2017"
+                        android:text="1/12/2018 to 1/13/2018"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -211,75 +216,7 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/layout_border"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Judul Journal"
-                        android:textColor="#4a4a4a"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="1-Jan-2018 to 3-Jan-2017"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/layout_border"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Judul Journal"
-                        android:textColor="#4a4a4a"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="1-Jan-2018 to 3-Jan-2017"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
 
