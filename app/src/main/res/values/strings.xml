@@ -62,4 +62,5 @@
         <item>UT HO</item>
         <item>UT KWN</item>
     </string-array>
+    <string name="title_activity_coba">CobaActivity</string>
 </resources>

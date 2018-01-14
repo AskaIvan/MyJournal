@@ -22,9 +22,7 @@ public class Journal {
     private String remark;
 
     public Journal() {
-
     }
-
     public Journal(String codejob, String codecategory, String category, String activity, String description, String sapsomp, String month, String start, String end, String hours, String venue, String vendor, String unittype, String remark){
         this.codejob = codejob;
         this.category = category;
@@ -62,7 +60,7 @@ public class Journal {
         return codecategory;
     }
 
-    public void setCodecategory(){
+    public void setCodecategory(String codecategory) {
         this.codecategory = codecategory;
     }
 
@@ -70,7 +68,7 @@ public class Journal {
         return activity;
     }
 
-    public void setActivity(){
+    public void setActivity(String activity) {
         this.activity = activity;
     }
 
@@ -78,7 +76,7 @@ public class Journal {
         return description;
     }
 
-    public void setDescription(){
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -86,7 +84,7 @@ public class Journal {
         return sapsomp;
     }
 
-    public void setSapsomp(){
+    public void setSapsomp(String sapsomp) {
         this.sapsomp = sapsomp;
     }
 
@@ -94,7 +92,7 @@ public class Journal {
         return month;
     }
 
-    public void setMonth(){
+    public void setMonth(String month) {
         this.month = month;
     }
 
@@ -102,7 +100,7 @@ public class Journal {
         return start;
     }
 
-    public void setStart(){
+    public void setStart(String start) {
         this.start = start;
     }
 
@@ -110,7 +108,7 @@ public class Journal {
         return end;
     }
 
-    public void setEnd(){
+    public void setEnd(String end) {
         this.end = end;
     }
 
@@ -118,7 +116,7 @@ public class Journal {
         return hours;
     }
 
-    public void setHours(){
+    public void setHours(String hours) {
         this.hours = hours;
     }
 
@@ -126,7 +124,7 @@ public class Journal {
         return venue;
     }
 
-    public void setVenue(){
+    public void setVenue(String venue) {
         this.venue = venue;
     }
 
@@ -134,7 +132,7 @@ public class Journal {
         return vendor;
     }
 
-    public void setVendor(){
+    public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
@@ -142,7 +140,7 @@ public class Journal {
         return unittype;
     }
 
-    public void setUnittype(){
+    public void setUnittype(String unittype) {
         this.unittype = unittype;
     }
 
@@ -150,7 +148,7 @@ public class Journal {
         return remark;
     }
 
-    public void setRemark(){
+    public void setRemark(String remark) {
         this.remark = remark;
     }
 }

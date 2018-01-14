@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,35 +8,41 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import id.sch.smktelkom_mlg.pw.utjournal.Model.Journal;
 
 public class HomeActivity extends AppCompatActivity {
     boolean isOpen = false;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private FloatingActionButton fab_plus, fab_logout, fab_create, fab_editacc;
     private Animation fabOpen, fabClose, fabRClockwise, fabRantiClockwise;
     private RecyclerView recyclerviewku;
-    private DatabaseReference myDatabase;
+    private DatabaseReference myDatabase, myDataUser;
     private FirebaseUser CUser;
-    private Query query;
+    private TextView dis_name, dis_area, dis_branch, dis_nrp;
+    private CircleImageView imgProfile;
 
 
 
@@ -43,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         fab_plus = findViewById(R.id.fab_plus);
         fab_logout = findViewById(R.id.fab_logout);
         fab_create = findViewById(R.id.fab_create);
@@ -53,17 +63,32 @@ public class HomeActivity extends AppCompatActivity {
         fabRClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         fabRantiClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
 
-        recyclerviewku = findViewById(R.id.journal_list);
-        recyclerviewku.setHasFixedSize(true);
-        recyclerviewku.setLayoutManager(new LinearLayoutManager(this));
-        myDatabase = FirebaseDatabase.getInstance().getReference().child("journal");
-
-        query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("journal");
-
 
         auth = FirebaseAuth.getInstance();
+        FirebaseUser userid = auth.getCurrentUser();
+        String userID = userid.getUid();
+
+        imgProfile = findViewById(R.id.pprofile);
+        dis_name = findViewById(R.id.showuser);
+        dis_area = findViewById(R.id.showarea);
+        dis_branch = findViewById(R.id.showbranch);
+        dis_nrp = findViewById(R.id.shownrp);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Please wait while load data.");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        recyclerviewku = findViewById(R.id.journal_list);
+        recyclerviewku.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerviewku.setLayoutManager(linearLayoutManager);
+        myDatabase = FirebaseDatabase.getInstance().getReference().child("journal");
+        myDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
+
+
         //get current user
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -79,6 +104,31 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         };
+
+        myDataUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String display_name = dataSnapshot.child("username").getValue().toString();
+                String display_area = dataSnapshot.child("area").getValue().toString();
+                String display_branch = dataSnapshot.child("branch").getValue().toString();
+                String display_nrp = dataSnapshot.child("nrp").getValue().toString();
+                String image = dataSnapshot.child("image").getValue().toString();
+
+                dis_name.setText(display_name);
+                dis_area.setText(display_area);
+                dis_branch.setText(display_branch);
+                dis_nrp.setText(display_nrp);
+
+                Picasso.with(HomeActivity.this).load(image).placeholder(R.mipmap.ic_launcher).into(imgProfile);
+
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,9 +175,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
+        Query query = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("journal");
         FirebaseRecyclerOptions<Journal> options =
                 new FirebaseRecyclerOptions.Builder<Journal>()
-                        .setQuery(query, Journal.class)
+                        .setQuery(myDatabase, Journal.class)
                         .build();
 
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Journal, JournalViewHolder>(options) {
@@ -157,25 +210,26 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public static class JournalViewHolder extends RecyclerView.ViewHolder {
-        TextView title, mulai, akhir;
+    public class JournalViewHolder extends RecyclerView.ViewHolder {
+        View mView;
 
         public JournalViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.journal_title);
-            mulai = itemView.findViewById(R.id.journal_timestart);
-            akhir = itemView.findViewById(R.id.journal_timeend);
+            itemView = mView;
         }
 
         public void setActivity(String activity) {
+            TextView title = mView.findViewById(R.id.journal_title);
             title.setText(activity);
         }
 
         public void setStart(String start) {
+            TextView mulai = mView.findViewById(R.id.journal_timestart);
             mulai.setText(start);
         }
 
         public void setEnd(String end) {
+            TextView akhir = mView.findViewById(R.id.journal_timeend);
             akhir.setText(end);
         }
     }

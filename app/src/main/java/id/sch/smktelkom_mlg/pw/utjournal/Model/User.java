@@ -12,18 +12,20 @@ public class User {
     private String branch;
     private String area;
     private String nrp;
+    private String imageProfile;
 
     public User(){
 
     }
 
-    public User(String username, String password, String email, String branch, String area, String nrp) {
+    public User(String username, String password, String email, String branch, String area, String nrp, String imageProfile) {
         //this.username = username;
         this.password = password ;
         this.email = email;
         this.branch = branch;
         this.area = area;
         this.nrp = nrp;
+        this.imageProfile = imageProfile;
     }
 
     public String getUsername()
@@ -76,6 +78,14 @@ public class User {
 
     public void setNrp(String nrp){
         this.nrp = nrp;
+    }
+
+    public String getImageProfile() {
+        return imageProfile;
+    }
+
+    public void setImageProfile(String imageProfile) {
+        this.imageProfile = imageProfile;
     }
 
 }

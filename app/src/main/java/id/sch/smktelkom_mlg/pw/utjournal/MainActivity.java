@@ -30,8 +30,6 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import id.sch.smktelkom_mlg.pw.utjournal.Model.User;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 final String branch = edtbranch.getText().toString().trim();
                 final String area = edtarea.getText().toString().trim();
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                final User user = new User(email, password, username, nrp, branch, area);
+                //final User user = new User(email, password, username, nrp, branch, area);
 
                 if (imgUri == null) {
                     Toast.makeText(getApplicationContext(), "Include your photo", Toast.LENGTH_SHORT).show();
