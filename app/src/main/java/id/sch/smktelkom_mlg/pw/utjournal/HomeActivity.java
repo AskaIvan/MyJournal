@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         fabRantiClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
 
 
+
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
@@ -81,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         progressDialog.show();
 
         recyclerviewku = findViewById(R.id.journal_list);
-        recyclerviewku.setHasFixedSize(true);
+        //recyclerviewku.setHasFixedSize(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerviewku.setLayoutManager(linearLayoutManager);
@@ -165,6 +167,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     public void signOut() {
@@ -175,25 +178,26 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("journal");
+        Query query = FirebaseDatabase.getInstance().getReference().child("journal");
         FirebaseRecyclerOptions<Journal> options =
                 new FirebaseRecyclerOptions.Builder<Journal>()
-                        .setQuery(myDatabase, Journal.class)
+                        .setQuery(query, Journal.class)
                         .build();
+        Log.d("kkk", "ini sampek option" + options);
 
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Journal, JournalViewHolder>(options) {
+        FirebaseRecyclerAdapter<Journal, JournalViewHolder> adapter = new FirebaseRecyclerAdapter<Journal, JournalViewHolder>(options) {
             @Override
             public JournalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.journal_row, parent, false);
-
+                Log.d("kkk", "ini sampek view" + view);
                 return new JournalViewHolder(view);
             }
 
             @Override
             protected void onBindViewHolder(JournalViewHolder holder, int position, Journal model) {
+                Log.d("kkk", "model:" + model.toString());
+
                 holder.setActivity(model.getActivity());
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
@@ -201,16 +205,42 @@ public class HomeActivity extends AppCompatActivity {
 
         };
         recyclerviewku.setAdapter(adapter);
+        adapter.startListening();
+
     }
 
-    public void onStop() {
+    @Override
+    protected void onStop() {
         super.onStop();
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
     }
 
-    public class JournalViewHolder extends RecyclerView.ViewHolder {
+    /*public class JournalViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+
+        public JournalViewHolder(View itemView) {
+            super(itemView);
+            itemView = mView;
+        }
+
+        public void setActivity(String activity) {
+            TextView title = mView.findViewById(R.id.journal_title);
+            title.setText(activity);
+        }
+
+        public void setStart(String start) {
+            TextView mulai = mView.findViewById(R.id.journal_timestart);
+            mulai.setText(start);
+        }
+
+        public void setEnd(String end) {
+            TextView akhir = mView.findViewById(R.id.journal_timeend);
+            akhir.setText(end);
+        }
+    }*/
+    public static class JournalViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
         public JournalViewHolder(View itemView) {

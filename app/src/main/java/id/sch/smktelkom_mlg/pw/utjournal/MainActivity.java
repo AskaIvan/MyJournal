@@ -1,7 +1,12 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -159,54 +165,57 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password is too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (isNetworkConnectionAvailable()) {
+                    //progressBar.setVisibility(View.VISIBLE);
+                    auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Toast.makeText(MainActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
 
-                //progressBar.setVisibility(View.VISIBLE);
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(MainActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                    //progressBar.setVisibility(View.GONE);
+                                    // If sign in fails, display a message to the user. If sign in succeeds
+                                    // the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (task.isSuccessful()) {
+                                        final String user_id = auth.getCurrentUser().getUid();
 
-                                //progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (task.isSuccessful()) {
-                                    final String user_id = auth.getCurrentUser().getUid();
+                                        mProgress.setMessage("Registering ...");
+                                        mProgress.show();
 
-                                    mProgress.setMessage("Registering ...");
-                                    mProgress.show();
-
-                                    StorageReference filepath = mStorageImage.child(imgUri.getLastPathSegment());
-                                    filepath.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            String downloadUri = taskSnapshot.getDownloadUrl().toString();
+                                        StorageReference filepath = mStorageImage.child(imgUri.getLastPathSegment());
+                                        filepath.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
 
-                                            DatabaseReference current_user_db = users1.child(user_id);
-                                            current_user_db.child("email").setValue(email1);
-                                            current_user_db.child("username").setValue(username);
-                                            current_user_db.child("password").setValue(password1);
-                                            current_user_db.child("nrp").setValue(nrp);
-                                            current_user_db.child("branch").setValue(branch);
-                                            current_user_db.child("area").setValue(area);
-                                            current_user_db.child("image").setValue(downloadUri);
+                                                DatabaseReference current_user_db = users1.child(user_id);
+                                                current_user_db.child("email").setValue(email1);
+                                                current_user_db.child("username").setValue(username);
+                                                current_user_db.child("password").setValue(password1);
+                                                current_user_db.child("nrp").setValue(nrp);
+                                                current_user_db.child("branch").setValue(branch);
+                                                current_user_db.child("area").setValue(area);
+                                                current_user_db.child("image").setValue(downloadUri);
 
-                                            mProgress.dismiss();
+                                                mProgress.dismiss();
 
-                                            Intent main = new Intent(MainActivity.this, HomeActivity.class);
-                                            main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(main);
-                                            finish();
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                                Intent main = new Intent(MainActivity.this, HomeActivity.class);
+                                                main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(main);
+                                                finish();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Authentication failed." + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                } else {
+                    checkNetworkConnection();
+                }
             }
         });
     }
@@ -230,6 +239,36 @@ public class MainActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
+        }
+    }
+
+    public void checkNetworkConnection() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No internet Connection");
+        builder.setMessage("Please turn on internet connection to continue");
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public boolean isNetworkConnectionAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+        if (isConnected) {
+            Log.d("Network", "Connected");
+            return true;
+        } else {
+            checkNetworkConnection();
+            Log.d("Network", "Not Connected");
+            return false;
         }
     }
 
