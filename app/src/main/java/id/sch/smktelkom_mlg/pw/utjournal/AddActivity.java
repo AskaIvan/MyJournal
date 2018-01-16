@@ -33,15 +33,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddActivity extends AppCompatActivity {
 
     private DatabaseReference journal, myDatabaseUser;
     private FirebaseDatabase database;
 
-    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtdescription, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark;
-    private Spinner spinnerMonth, spinnerVenue, spinnerVendor;
+    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtdescription, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
+    private Spinner spinnerVenue, spinnerVendor;
     private Button btnadd;
     private int mYear, mMonth, mDay;
     private ProgressDialog mProgress;
@@ -73,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
         edtactivity = findViewById(R.id.edtactivity);
         edtdescription = findViewById(R.id.edtdescription);
         edtsapsomp = findViewById(R.id.edtsapsomp);
-        spinnerMonth = findViewById(R.id.spinnerMonth);
+        edMonth = findViewById(R.id.edMonth);
         edtstart = findViewById(R.id.edtstart);
         edtend = findViewById(R.id.edtend);
         edthours = findViewById(R.id.edthours);
@@ -83,7 +85,6 @@ public class AddActivity extends AppCompatActivity {
         edtremark = findViewById(R.id.edtremark);
         btnadd = findViewById(R.id.btnAdd);
         auth = FirebaseAuth.getInstance();
-
 
         mProgress = new ProgressDialog(this);
         //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -103,7 +104,7 @@ public class AddActivity extends AppCompatActivity {
             }
         };
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
+        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(adapter);
         spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -121,10 +122,10 @@ public class AddActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.venue, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerVenue.setAdapter(adapter1);
         spinnerVenue.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -144,7 +145,7 @@ public class AddActivity extends AppCompatActivity {
         });
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.vendor, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerVendor.setAdapter(adapter2);
         spinnerVendor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -163,6 +164,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+
         edtstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,6 +172,10 @@ public class AddActivity extends AppCompatActivity {
                 mYear = mcurrentDate.get(Calendar.YEAR);
                 mMonth = mcurrentDate.get(Calendar.MONTH);
                 mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                SimpleDateFormat dateFormat;
+                dateFormat = new SimpleDateFormat("MMM");
+                edMonth.setText(dateFormat.format(new Date()));
 
                 DatePickerDialog mDatePicker = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -189,6 +195,36 @@ public class AddActivity extends AppCompatActivity {
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Start Date");
+                mDatePicker.show();
+            }
+        });
+
+        edtend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentDate = Calendar.getInstance();
+                mYear = mcurrentDate.get(Calendar.YEAR);
+                mMonth = mcurrentDate.get(Calendar.MONTH);
+                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = month;
+                        mDay = dayOfMonth;
+                        updateDisplay();
+                    }
+
+                    private void updateDisplay() {
+                        edtend.setText(
+                                new StringBuilder()
+                                        .append(mMonth + 1).append("/")
+                                        .append(mDay).append("/")
+                                        .append(mYear));
+                    }
+                }, mYear, mMonth, mDay);
+                mDatePicker.setTitle("End Date");
                 mDatePicker.show();
             }
         });
@@ -292,7 +328,7 @@ public class AddActivity extends AppCompatActivity {
         final String mActivity = edtactivity.getText().toString().trim();
         final String mDescription = edtdescription.getText().toString().trim();
         final String mSapsomp = edtsapsomp.getText().toString().trim();
-        final String mMonth = spinnerMonth.getSelectedItem().toString().trim();
+        final String mMonth = edMonth.getText().toString().trim();
         final String mStart = edtstart.getText().toString().trim();
         final String mEnd = edtend.getText().toString().trim();
         final String mHours = edthours.getText().toString().trim();
@@ -302,7 +338,7 @@ public class AddActivity extends AppCompatActivity {
         final String mRemark = edtremark.getText().toString().trim();
 
         if (!TextUtils.isEmpty(mCodejob) && !TextUtils.isEmpty(mCatgeory) && !TextUtils.isEmpty(mCodecategory) && !TextUtils.isEmpty(mActivity) && !TextUtils.isEmpty(mDescription) &&
-                !TextUtils.isEmpty(mSapsomp) && !TextUtils.isEmpty(mMonth) && spinnerMonth.getSelectedItem() != null && spinnerVenue.getSelectedItem() != null && spinnerVendor.getSelectedItem() != null && !TextUtils.isEmpty(mStart) && !TextUtils.isEmpty(mEnd) && !TextUtils.isEmpty(mHours) && !TextUtils.isEmpty(mVenue) &&
+                !TextUtils.isEmpty(mSapsomp) && !TextUtils.isEmpty(mMonth) && spinnerVenue.getSelectedItem() != null && spinnerVendor.getSelectedItem() != null && !TextUtils.isEmpty(mStart) && !TextUtils.isEmpty(mEnd) && !TextUtils.isEmpty(mHours) && !TextUtils.isEmpty(mVenue) &&
                 !TextUtils.isEmpty(mVendor) && !TextUtils.isEmpty(mUnittype) && !TextUtils.isEmpty(mRemark)) {
             mProgress.show();
 

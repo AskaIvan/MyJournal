@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
     private ProgressDialog progressDialog;
     private DatabaseReference myDataUser;
     private RecyclerView recyclerviewku;
-
+    private Query queryjournal;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -55,19 +55,21 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
-        myDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
+        myDataUser = FirebaseDatabase.getInstance().getReference().child("journal");
 
         recyclerviewku = rootview.findViewById(R.id.journal_list);
         //recyclerviewku.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerviewku.setLayoutManager(linearLayoutManager);
 
         progressDialog = new ProgressDialog(container.getContext());
         progressDialog.setTitle("Loading...");
         progressDialog.setMessage("Please wait while load data.");
         progressDialog.setCanceledOnTouchOutside(false);
-        //progressDialog.show();
+        progressDialog.show();
 
         auth = FirebaseAuth.getInstance();
 
@@ -100,10 +102,15 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser userid = auth.getCurrentUser();
+        String userID = userid.getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("journal");
+        queryjournal = query.orderByChild("uid").equalTo(userID);
         FirebaseRecyclerOptions<Journal> options =
                 new FirebaseRecyclerOptions.Builder<Journal>()
-                        .setQuery(query, Journal.class)
+                        .setQuery(queryjournal, Journal.class)
                         .build();
         Log.d("kkk", "ini sampek option" + options);
 
@@ -128,7 +135,7 @@ public class HomeFragment extends Fragment {
         };
         recyclerviewku.setAdapter(adapter);
         adapter.startListening();
-
+        progressDialog.dismiss();
     }
 
     public void onStop() {
@@ -160,10 +167,11 @@ public class HomeFragment extends Fragment {
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
             }
-
         };
         recyclerviewku.setAdapter(adapter);
         adapter.startListening();
+        progressDialog.dismiss();
+        recyclerviewku.smoothScrollToPosition(0);
     }
 
     private class JournalViewHolder extends RecyclerView.ViewHolder {

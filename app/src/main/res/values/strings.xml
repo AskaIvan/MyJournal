@@ -35,6 +35,8 @@
     <string name="vendor">Vendor</string>
     <string name="unittype">Unit Type</string>
     <string name="remark">Remark</string>
+    <string name="filename">File Name</string>
+    <string name="download">Download</string>
 
     <string-array name="month">
         <item></item>

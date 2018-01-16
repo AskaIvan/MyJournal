@@ -82,14 +82,6 @@
                     android:hint="@string/sapsomp"
                     android:inputType="text" />
 
-                <Spinner
-                    android:id="@+id/spinnerMonth"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/edittextstyle" />
-
                 <EditText
                     android:id="@+id/edtstart"
                     android:layout_width="300dp"
@@ -97,6 +89,9 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/edittextstyle"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
                     android:hint="@string/start" />
 
                 <EditText
@@ -106,7 +101,22 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/edittextstyle"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
                     android:hint="@string/end" />
+
+                <EditText
+                    android:id="@+id/edMonth"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="@string/month"
+                    tools:ignore="Deprecated" />
 
                 <EditText
                     android:id="@+id/edthours"
