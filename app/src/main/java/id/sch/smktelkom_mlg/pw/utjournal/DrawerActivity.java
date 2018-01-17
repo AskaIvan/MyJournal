@@ -150,7 +150,6 @@ public class DrawerActivity extends AppCompatActivity
         android.support.v4.app.Fragment fragment = null;
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
             fragment = new HomeFragment();
             setTitle("Home");
         } else if (id == R.id.nav_profile) {
