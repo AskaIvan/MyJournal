@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference users1;
 
     private EditText edtpassword, edtemail;
-    private Button btnLogin, btnToSignUp;
+    private Button btnLogin, btnToSignUp, btnToReset;
     private ProgressDialog mProgress;
 
 
@@ -58,12 +58,20 @@ public class LoginActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(this);
 
         btnToSignUp = findViewById(R.id.btnToSignUp);
+        btnToReset = findViewById(R.id.btnToReset);
 
         btnToSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent s = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(s);
+            }
+        });
+
+        btnToReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetpassActivity.class));
             }
         });
 

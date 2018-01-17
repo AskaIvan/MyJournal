@@ -98,7 +98,8 @@
                     android:background="@drawable/edittextstyle"
                     android:cursorVisible="false"
                     android:hint="NRP"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="8" />
 
                 <EditText
                     android:id="@+id/edtbranch"

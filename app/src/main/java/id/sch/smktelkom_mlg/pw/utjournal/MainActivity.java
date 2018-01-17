@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
                                                 mProgress.dismiss();
 
-                                                Intent main = new Intent(MainActivity.this, HomeActivity.class);
+                                                Intent main = new Intent(MainActivity.this, DrawerActivity.class);
                                                 main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(main);
                                                 finish();

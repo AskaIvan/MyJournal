@@ -229,36 +229,6 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        edtend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentDate = Calendar.getInstance();
-                mYear = mcurrentDate.get(Calendar.YEAR);
-                mMonth = mcurrentDate.get(Calendar.MONTH);
-                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog mDatePicker = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mYear = year;
-                        mMonth = month;
-                        mDay = dayOfMonth;
-                        updateDisplay();
-                    }
-
-                    private void updateDisplay() {
-                        edtend.setText(
-                                new StringBuilder()
-                                        .append(mMonth + 1).append("/")
-                                        .append(mDay).append("/")
-                                        .append(mYear));
-                    }
-                }, mYear, mMonth, mDay);
-                mDatePicker.setTitle("End Date");
-                mDatePicker.show();
-            }
-        });
-
 
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override

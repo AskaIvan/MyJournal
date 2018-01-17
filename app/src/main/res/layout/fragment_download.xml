@@ -43,7 +43,7 @@
                     android:inputType="text"
                     android:textAlignment="center" />
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/edtstart"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:editable="false"
                     android:focusable="false"
                     android:hint="@string/end"
-                    android:textAlignment="center" />
+                    android:textAlignment="center" />-->
 
                 <Button
                     android:id="@+id/btnDownload"

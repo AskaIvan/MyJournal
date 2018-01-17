@@ -159,7 +159,6 @@ public class DrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_download) {
             fragment = new DownloadFragment();
             setTitle("Download");
-
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNow();

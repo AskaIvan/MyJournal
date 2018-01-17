@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import id.sch.smktelkom_mlg.pw.utjournal.Model.Journal;
@@ -54,7 +56,9 @@ public class DownloadFragment extends Fragment {
     private EditText nEditFileName, nEdstart, nEdend;
     private Button nBtnDownload;
     private ProgressDialog progressDialog;
+    private int mYear, mMonth, mDay;
     private List<Journal> mJournalku = new ArrayList<>();
+    private Query TqueryJournal;
 
 
     public DownloadFragment() {
@@ -78,6 +82,8 @@ public class DownloadFragment extends Fragment {
         String userID = userid.getUid();
         myDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
         ijournal = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
+        //startDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
+        //endDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
 
 
         progressDialog = new ProgressDialog(container.getContext());
@@ -99,16 +105,20 @@ public class DownloadFragment extends Fragment {
             }
         };
 
+
         nBtnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
+                    String namefile = nEditFileName.getText().toString();
                     if (checkPermission()) {
-                        progressDialog.show();
-
-                        startsave();
-                        progressDialog.dismiss();
-
+                        if (!TextUtils.isEmpty(namefile)) {
+                            startsave();
+                            String namefile1 = nEditFileName.getText().toString();
+                            String path = String.valueOf(Environment.getExternalStorageDirectory()) + "/" + namefile1 + ".xls";
+                            Toast.makeText(getContext(), "Check it on ", Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(getContext(), "Can't download data, check your File Name", Toast.LENGTH_LONG).show();
                     } else {
                         requestPermission();
                     }
@@ -148,17 +158,24 @@ public class DownloadFragment extends Fragment {
     }
 
     private void startsave() {
+        progressDialog.show();
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser userid = auth.getCurrentUser();
+        String userID = userid.getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("journal");
+        TqueryJournal = query.orderByChild("uid").equalTo(userID);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        TqueryJournal.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int i = 1;
                 WritableWorkbook myFirstWbook = null;
+                Date currentdate = new Date();
+                String namefile = nEditFileName.getText().toString();
                 try {
 
-                    myFirstWbook = Workbook.createWorkbook(new File(String.valueOf(Environment.getExternalStorageDirectory()) + "/excelkuaswmmmg.xls"));
+                    myFirstWbook = Workbook.createWorkbook(new File(String.valueOf(Environment.getExternalStorageDirectory()) + "/" + namefile + ".xls"));
                     Log.d("excel", "excel :" + myFirstWbook);
 
                     // create an Excel sheet
@@ -194,9 +211,9 @@ public class DownloadFragment extends Fragment {
                     label = new Label(14, 0, "REMARK");
                     excelSheet.addCell(label);
                     for (DataSnapshot journalSnapshot : dataSnapshot.getChildren()) {
-                        Journal b = new Journal();
+                        //Journal b = new Journal();
 
-                        mJournalku.add(b);
+                        //mJournalku.add(b);
                         Log.d("isi lihat datanya", "ya data" + mJournalku.size());
                         Journal journal = journalSnapshot.getValue(Journal.class);
                         String mCodejob = journal.getCodejob();
@@ -251,13 +268,6 @@ public class DownloadFragment extends Fragment {
 
                     myFirstWbook.write();
 
-                    /*label = new Label(1, 1, "Passed");
-                    excelSheet.addCell(label);
-
-                    label = new Label(1, 2, "Passed 2");
-                    excelSheet.addCell(label);*/
-
-
                     Log.d("ini write", "sampun" + myFirstWbook);
 
 
@@ -277,24 +287,6 @@ public class DownloadFragment extends Fragment {
                         }
                     }
                 }
-                //String thevalue = String.valueOf(dataSnapshot.getChildren());
-
-                /*String mCodejob = thevalue.getCodejob();
-                String mCatgeory = journal.getCategory();
-                String mCodecategory = journal.getCodecategory();
-                String mActivity = journal.getActivity();
-                String mDescription = journal.getDescription();
-                String mSapsomp = journal.getSapsomp();
-                String mMonth = journal.getMonth();
-                String mStart = journal.getStart();
-                String mEnd = journal.getEnd();
-                String mHours = journal.getHours();
-                String mVenue = journal.getVenue();
-                String mVendor = journal.getVendor();
-                String mUnittype = journal.getUnittype();
-                String mRemark = journal.getRemark();
-                Log.d("isi itemcodejob", "jour" + mCodejob);*/
-
             }
 
             @Override
@@ -302,6 +294,8 @@ public class DownloadFragment extends Fragment {
 
             }
         });
+        Toast.makeText(getContext(), "Download Data Complete!", Toast.LENGTH_LONG).show();
+        progressDialog.dismiss();
     }
 
     @Override
