@@ -23,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import id.sch.smktelkom_mlg.pw.utjournal.Model.Journal;
 
 
@@ -38,6 +41,8 @@ public class HomeFragment extends Fragment {
     private DatabaseReference myDataUser;
     private RecyclerView recyclerviewku;
     private Query queryjournal;
+    private List<Journal> mJournalku = new ArrayList<>();
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -55,6 +60,7 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
+
         myDataUser = FirebaseDatabase.getInstance().getReference().child("journal");
 
         recyclerviewku = rootview.findViewById(R.id.journal_list);
@@ -71,6 +77,7 @@ public class HomeFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+
         auth = FirebaseAuth.getInstance();
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -85,6 +92,21 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
+
+        /*ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                myDataUser.child(journal_key).removeValue();
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerviewku);*/
 
 
         fab_create.setOnClickListener(new View.OnClickListener() {
@@ -127,15 +149,28 @@ public class HomeFragment extends Fragment {
             protected void onBindViewHolder(JournalViewHolder holder, int position, Journal model) {
                 Log.d("kkk", "model:" + model.toString());
 
+                final String journal_key = getRef(position).getKey();
+
                 holder.setActivity(model.getActivity());
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), EditActivity.class);
+                        intent.putExtra("journalid", journal_key);
+                        startActivity(intent);
+                    }
+                });
             }
 
         };
         recyclerviewku.setAdapter(adapter);
         adapter.startListening();
         progressDialog.dismiss();
+        recyclerviewku.smoothScrollToPosition(0);
+
     }
 
     public void onStop() {
@@ -163,9 +198,21 @@ public class HomeFragment extends Fragment {
             protected void onBindViewHolder(JournalViewHolder holder, int position, Journal model) {
                 Log.d("kkk", "model:" + model.toString());
 
+                final String journal_key = getRef(position).getKey();
+
+
                 holder.setActivity(model.getActivity());
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), EditActivity.class);
+                        intent.putExtra("journalid", journal_key);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         recyclerviewku.setAdapter(adapter);

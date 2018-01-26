@@ -34,7 +34,8 @@
             android:name=".DrawerActivity"
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ResetpassActivity"></activity>
+        <activity android:name=".ResetpassActivity" />
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

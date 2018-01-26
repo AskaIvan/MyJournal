@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +61,7 @@ public class DownloadFragment extends Fragment {
     private ProgressDialog progressDialog;
     private int mYear, mMonth, mDay;
     private List<Journal> mJournalku = new ArrayList<>();
-    private Query TqueryJournal;
+    private Query TqueryJournal, Tdate;
 
 
     public DownloadFragment() {
@@ -105,18 +108,49 @@ public class DownloadFragment extends Fragment {
             }
         };
 
+        nEdstart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentDate = Calendar.getInstance();
+                mYear = mcurrentDate.get(Calendar.YEAR);
+                mMonth = mcurrentDate.get(Calendar.MONTH);
+                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = month;
+                        mDay = dayOfMonth;
+                        updateDisplay();
+                    }
+
+                    private void updateDisplay() {
+                        nEdstart.setText(
+                                new StringBuilder()
+                                        .append(mMonth + 1).append("/")
+                                        .append(mDay).append("/")
+                                        .append(mYear));
+                    }
+                }, mYear, mMonth, mDay);
+                mDatePicker.setTitle("Start Date");
+                mDatePicker.show();
+            }
+        });
+
 
         nBtnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     String namefile = nEditFileName.getText().toString();
+                    String datenya = nEdstart.getText().toString();
                     if (checkPermission()) {
-                        if (!TextUtils.isEmpty(namefile)) {
+                        if (!TextUtils.isEmpty(namefile) && !TextUtils.isEmpty(datenya)) {
                             startsave();
                             String namefile1 = nEditFileName.getText().toString();
                             String path = String.valueOf(Environment.getExternalStorageDirectory()) + "/" + namefile1 + ".xls";
-                            Toast.makeText(getContext(), "Check it on ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Check it on " + path, Toast.LENGTH_LONG).show();
                         } else
                             Toast.makeText(getContext(), "Can't download data, check your File Name", Toast.LENGTH_LONG).show();
                     } else {
@@ -161,14 +195,18 @@ public class DownloadFragment extends Fragment {
         progressDialog.show();
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
+        String datestart = nEdstart.getText().toString();
+
         String userID = userid.getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("journal");
-        TqueryJournal = query.orderByChild("uid").equalTo(userID);
+        TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart);
+        //Tdate = query.orderByChild("start").startAt(datenya);
 
         TqueryJournal.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 int i = 1;
                 WritableWorkbook myFirstWbook = null;
                 Date currentdate = new Date();

@@ -21,6 +21,7 @@
     <string name="account">Create Account</string>
 
     <string name="add">Add Journal</string>
+    <string name="delete">Delete</string>
     <string name="codejob">Code Job</string>
     <string name="category">Category</string>
     <string name="codecat">Code Category</string>

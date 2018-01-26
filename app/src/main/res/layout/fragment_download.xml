@@ -43,7 +43,7 @@
                     android:inputType="text"
                     android:textAlignment="center" />
 
-                <!--<EditText
+                <EditText
                     android:id="@+id/edtstart"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                     android:hint="@string/start"
                     android:textAlignment="center" />
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/edtend"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"

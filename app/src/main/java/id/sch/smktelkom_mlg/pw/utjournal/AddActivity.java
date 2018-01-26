@@ -333,6 +333,7 @@ public class AddActivity extends AppCompatActivity {
                     newJournal.child("unittype").setValue(mUnittype);
                     newJournal.child("remark").setValue(mRemark);
                     newJournal.child("uid").setValue(CUser.getUid());
+                    newJournal.child("uid_start").setValue(CUser.getUid() + "_" + mStart);
                     newJournal.child("name").setValue(dataSnapshot.child("username").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

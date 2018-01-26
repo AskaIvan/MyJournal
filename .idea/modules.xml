@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://D:\Sekolah\ProjectAndroid\UTJournal\MyJournal.iml" filepath="D:\Sekolah\ProjectAndroid\UTJournal\MyJournal.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MyJournal5.iml" filepath="$PROJECT_DIR$/MyJournal5.iml" />
       <module fileurl="file://D:\Sekolah\ProjectAndroid\UTJournal\MyJournal5.iml" filepath="D:\Sekolah\ProjectAndroid\UTJournal\MyJournal5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UTJournal.iml" filepath="$PROJECT_DIR$/UTJournal.iml" />
       <module fileurl="file://E:\SEKOLAH\telkom_school\XII RPL 6\PROJEK WORK\MyJournal5\UTJournal.iml" filepath="E:\SEKOLAH\telkom_school\XII RPL 6\PROJEK WORK\MyJournal5\UTJournal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
