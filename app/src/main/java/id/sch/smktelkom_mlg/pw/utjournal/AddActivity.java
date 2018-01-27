@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,7 +34,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,15 +49,15 @@ public class AddActivity extends AppCompatActivity {
     private DatabaseReference journal, myDatabaseUser;
     private FirebaseDatabase database;
 
-    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtdescription, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
-    private Spinner spinnerVenue, spinnerVendor;
+    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
+    private Spinner spinnerVenue, spinnerVendor, spinnerCodeJob;
+    private AutoCompleteTextView edtdescription;
     private Button btnadd;
     private int mYear, mMonth, mDay;
     private ProgressDialog mProgress;
     private FirebaseAuth auth;
     private FirebaseUser CUser;
     private FirebaseAuth.AuthStateListener authListener;
-
     private String mpost_key = null;
 
 
@@ -70,6 +77,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         edtcodejob = findViewById(R.id.edtcodejob);
+        //spinnerCodeJob = findViewById(R.id.spinnercodejob);
         edtcategory = findViewById(R.id.edtcategory);
         edtcodecategory = findViewById(R.id.edtcodecat);
         edtactivity = findViewById(R.id.edtactivity);
@@ -164,6 +172,30 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        final ArrayList<String> items = getDatas("dataexcel.json");
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, items);
+        Log.d("alamak", "isi json" + items);
+        Log.d("alamak", "isi mbuh" + adapter3);
+        //adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        edtdescription.setAdapter(adapter3);
+
+        /*spinnerCodeJob.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                // Set the text followed by the position
+                //edtcategory.setText(items.get(position));
+               // edtcodecategory.setText(items.get(position).indexOf("code"));
+                //edtactivity.setText(items.get(position).indexOf("activity"));
+                //edtdescription.setText(items.get(position).indexOf("desc"));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
+
 
         edtstart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +289,31 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public ArrayList<String> getDatas(String filename) {
+        JSONArray jsonArray = null;
+        ArrayList<String> cList = new ArrayList<String>();
+        try {
+            InputStream inputStream = getResources().getAssets().open(filename);
+            int size = inputStream.available();
+            byte[] data = new byte[size];
+            inputStream.read(data);
+            inputStream.close();
+            String json = new String(data, "UTF-8");
+            jsonArray = new JSONArray(json);
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    cList.add(jsonArray.getJSONObject(i).getString("desc"));
+                    //edtcategory.setText(jsonArray.getJSONArray(i).getString(Integer.parseInt("category")));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
+        return cList;
     }
 
     public void checkNetworkConnection() {
