@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,6 +23,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,22 +40,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     private DatabaseReference journal, myDatabaseUser;
     private FirebaseDatabase database;
 
     private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
     private Spinner spinnerVenue, spinnerVendor, spinnerCodeJob;
-    private AutoCompleteTextView edtdescription;
+    private Spinner edtDescription;
     private Button btnadd;
     private int mYear, mMonth, mDay;
     private ProgressDialog mProgress;
@@ -59,6 +62,8 @@ public class AddActivity extends AppCompatActivity {
     private FirebaseUser CUser;
     private FirebaseAuth.AuthStateListener authListener;
     private String mpost_key = null;
+    private ArrayList<String> desc;
+    private JSONArray data;
 
 
     @Override
@@ -81,9 +86,9 @@ public class AddActivity extends AppCompatActivity {
         edtcategory = findViewById(R.id.edtcategory);
         edtcodecategory = findViewById(R.id.edtcodecat);
         edtactivity = findViewById(R.id.edtactivity);
-        edtdescription = findViewById(R.id.edtdescription);
+        edtDescription = findViewById(R.id.edtdescription);
         edtsapsomp = findViewById(R.id.edtsapsomp);
-        edMonth = findViewById(R.id.edMonth);
+        //edMonth = findViewById(R.id.edMonth);
         edtstart = findViewById(R.id.edtstart);
         edtend = findViewById(R.id.edtend);
         edthours = findViewById(R.id.edthours);
@@ -93,6 +98,9 @@ public class AddActivity extends AppCompatActivity {
         edtremark = findViewById(R.id.edtremark);
         btnadd = findViewById(R.id.btnAdd);
         auth = FirebaseAuth.getInstance();
+
+        desc = new ArrayList<String>();
+        edtDescription.setOnItemSelectedListener(this);
 
         mProgress = new ProgressDialog(this);
         //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,26 +119,6 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         };
-
-        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMonth.setAdapter(adapter);
-        spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    ((TextView) parent.getChildAt(0)).setText(null);
-                    ((TextView) view.findViewById(android.R.id.text1)).setHint("Select Month");
-                    ((TextView) parent.getChildAt(0)).setTextSize(18);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.venue, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -172,30 +160,6 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        final ArrayList<String> items = getDatas("dataexcel.json");
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, items);
-        Log.d("alamak", "isi json" + items);
-        Log.d("alamak", "isi mbuh" + adapter3);
-        //adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        edtdescription.setAdapter(adapter3);
-
-        /*spinnerCodeJob.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                // Set the text followed by the position
-                //edtcategory.setText(items.get(position));
-               // edtcodecategory.setText(items.get(position).indexOf("code"));
-                //edtactivity.setText(items.get(position).indexOf("activity"));
-                //edtdescription.setText(items.get(position).indexOf("desc"));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-
 
         edtstart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,10 +168,6 @@ public class AddActivity extends AppCompatActivity {
                 mYear = mcurrentDate.get(Calendar.YEAR);
                 mMonth = mcurrentDate.get(Calendar.MONTH);
                 mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                SimpleDateFormat dateFormat;
-                dateFormat = new SimpleDateFormat("MMM");
-                edMonth.setText(dateFormat.format(new Date()));
 
                 DatePickerDialog mDatePicker = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -289,9 +249,142 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+        /*edtDescription.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getData();
+                edtcodejob.setText(getKode(position));
+                edtcategory.setText(getCategory(position));
+                edtcodecategory.setText(getCode(position));
+                edtactivity.setText(getActivity(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                edtcodejob.setText("");
+                edtcategory.setText("");
+                edtcodecategory.setText("");
+                edtactivity.setText("");
+            }
+        });*/
+        getData();
     }
 
-    public ArrayList<String> getDatas(String filename) {
+    private void getData() {
+        StringRequest stringRequest = new StringRequest(Config.DATA_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject j = null;
+                        try {
+                            //Parsing the fetched Json String to JSON Object
+                            j = new JSONObject(response);
+
+                            //Storing the Array of JSON String to our JSON Array
+                            data = j.getJSONArray(Config.JSON_ARRAY);
+                            Log.d("asow", "asowlah" + data);
+
+                            //Calling method getStudents to get the students from the JSON Array
+                            getDesc(data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+    private void getDesc(JSONArray j) {
+        for (int i = 0; i < j.length(); i++) {
+            try {
+                //Getting json object
+                JSONObject json = j.getJSONObject(i);
+
+                //Adding the name of the student to array list
+                desc.add(json.getString(Config.TAG_DESC));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Setting adapter to show the items in the spinner
+        //ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, desc);
+        //edtDescription.setAdapter(adapter3);
+        edtDescription.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, desc));
+    }
+
+    private String getActivity(int position) {
+        String activity = "";
+        try {
+            //Getting object of given index
+            JSONObject json = data.getJSONObject(position);
+
+            //Fetching name from that object
+            activity = json.getString(Config.TAG_ACTIVITY);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //Returning the name
+        return activity;
+    }
+
+    private String getCategory(int position) {
+        String category = "";
+        try {
+            //Getting object of given index
+            JSONObject json = data.getJSONObject(position);
+
+            //Fetching name from that object
+            category = json.getString(Config.TAG_CATEGORY);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //Returning the name
+        return category;
+    }
+
+    private String getCode(int position) {
+        String code = "";
+        try {
+            //Getting object of given index
+            JSONObject json = data.getJSONObject(position);
+
+            //Fetching name from that object
+            code = json.getString(Config.TAG_CODE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //Returning the name
+        return code;
+    }
+
+    private String getKode(int position) {
+        String kode = "";
+        try {
+            //Getting object of given index
+            JSONObject json = data.getJSONObject(position);
+
+            //Fetching name from that object
+            kode = json.getString(Config.TAG_KODE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //Returning the name
+        return kode;
+    }
+
+    /*public ArrayList<String> getDatas(String filename) {
         JSONArray jsonArray = null;
         ArrayList<String> cList = new ArrayList<String>();
         try {
@@ -300,7 +393,7 @@ public class AddActivity extends AppCompatActivity {
             byte[] data = new byte[size];
             inputStream.read(data);
             inputStream.close();
-            String json = new String(data, "UTF-8");
+            final String json = new String(data, "UTF-8");
             jsonArray = new JSONArray(json);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -314,7 +407,7 @@ public class AddActivity extends AppCompatActivity {
             je.printStackTrace();
         }
         return cList;
-    }
+    }*/
 
     public void checkNetworkConnection() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -353,9 +446,9 @@ public class AddActivity extends AppCompatActivity {
         final String mCatgeory = edtcategory.getText().toString().trim();
         final String mCodecategory = edtcodecategory.getText().toString().trim();
         final String mActivity = edtactivity.getText().toString().trim();
-        final String mDescription = edtdescription.getText().toString().trim();
+        final String mDescription = edtDescription.getSelectedItem().toString().trim();
         final String mSapsomp = edtsapsomp.getText().toString().trim();
-        final String mMonth = edMonth.getText().toString().trim();
+        //final String mMonth = edMonth.getText().toString().trim();
         final String mStart = edtstart.getText().toString().trim();
         final String mEnd = edtend.getText().toString().trim();
         final String mHours = edthours.getText().toString().trim();
@@ -364,8 +457,11 @@ public class AddActivity extends AppCompatActivity {
         final String mUnittype = edtunittype.getText().toString().trim();
         final String mRemark = edtremark.getText().toString().trim();
 
+        final SimpleDateFormat dateFormat;
+        dateFormat = new SimpleDateFormat("MMM");
+
         if (!TextUtils.isEmpty(mCodejob) && !TextUtils.isEmpty(mCatgeory) && !TextUtils.isEmpty(mCodecategory) && !TextUtils.isEmpty(mActivity) && !TextUtils.isEmpty(mDescription) &&
-                !TextUtils.isEmpty(mSapsomp) && !TextUtils.isEmpty(mMonth) && spinnerVenue.getSelectedItem() != null && spinnerVendor.getSelectedItem() != null && !TextUtils.isEmpty(mStart) && !TextUtils.isEmpty(mEnd) && !TextUtils.isEmpty(mHours) && !TextUtils.isEmpty(mVenue) &&
+                !TextUtils.isEmpty(mSapsomp) && spinnerVenue.getSelectedItem() != null && spinnerVendor.getSelectedItem() != null && !TextUtils.isEmpty(mStart) && !TextUtils.isEmpty(mEnd) && !TextUtils.isEmpty(mHours) && !TextUtils.isEmpty(mVenue) &&
                 !TextUtils.isEmpty(mVendor) && !TextUtils.isEmpty(mUnittype) && !TextUtils.isEmpty(mRemark)) {
             mProgress.show();
 
@@ -381,7 +477,7 @@ public class AddActivity extends AppCompatActivity {
                     newJournal.child("activity").setValue(mActivity);
                     newJournal.child("description").setValue(mDescription);
                     newJournal.child("sapsomp").setValue(mSapsomp);
-                    newJournal.child("month").setValue(mMonth);
+                    newJournal.child("month").setValue(dateFormat.format(new Date()));
                     newJournal.child("start").setValue(mStart);
                     newJournal.child("end").setValue(mEnd);
                     newJournal.child("hours").setValue(mHours);
@@ -423,6 +519,22 @@ public class AddActivity extends AppCompatActivity {
         //journal.child(journals).
 
 
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        edtcodejob.setText(getKode(position));
+        edtcategory.setText(getCategory(position));
+        edtcodecategory.setText(getCode(position));
+        edtactivity.setText(getActivity(position));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        edtcodejob.setText("");
+        edtcategory.setText("");
+        edtcodecategory.setText("");
+        edtactivity.setText("");
     }
 }
 

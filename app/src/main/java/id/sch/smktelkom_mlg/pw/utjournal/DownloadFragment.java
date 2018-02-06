@@ -137,6 +137,35 @@ public class DownloadFragment extends Fragment {
                 mDatePicker.show();
             }
         });
+        nEdend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentDate = Calendar.getInstance();
+                mYear = mcurrentDate.get(Calendar.YEAR);
+                mMonth = mcurrentDate.get(Calendar.MONTH);
+                mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = month;
+                        mDay = dayOfMonth;
+                        updateDisplay();
+                    }
+
+                    private void updateDisplay() {
+                        nEdend.setText(
+                                new StringBuilder()
+                                        .append(mMonth + 1).append("/")
+                                        .append(mDay).append("/")
+                                        .append(mYear));
+                    }
+                }, mYear, mMonth, mDay);
+                mDatePicker.setTitle("Start Date");
+                mDatePicker.show();
+            }
+        });
 
 
         nBtnDownload.setOnClickListener(new View.OnClickListener() {
@@ -144,9 +173,10 @@ public class DownloadFragment extends Fragment {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     String namefile = nEditFileName.getText().toString();
-                    String datenya = nEdstart.getText().toString();
+                    String datenyastart = nEdstart.getText().toString();
+                    String datenyaend = nEdend.getText().toString();
                     if (checkPermission()) {
-                        if (!TextUtils.isEmpty(namefile) && !TextUtils.isEmpty(datenya)) {
+                        if (!TextUtils.isEmpty(namefile) && !TextUtils.isEmpty(datenyastart)) {
                             startsave();
                             String namefile1 = nEditFileName.getText().toString();
                             String path = String.valueOf(Environment.getExternalStorageDirectory()) + "/" + namefile1 + ".xls";
@@ -196,10 +226,11 @@ public class DownloadFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
         String datestart = nEdstart.getText().toString();
+        String dateend = nEdend.getText().toString();
 
         String userID = userid.getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("journal");
-        TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart);
+        TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart).endAt(userID + "_" + dateend);
         //Tdate = query.orderByChild("start").startAt(datenya);
 
         TqueryJournal.addListenerForSingleValueEvent(new ValueEventListener() {

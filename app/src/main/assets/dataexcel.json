@@ -1,296 +1,53 @@
-[
-  {
-    "activity": "Absent",
-    "category": "Absent",
-    "code": "ABSENT",
-    "desc": "Cuti (Tahunan, Site)",
-    "kode": 100
-  },
-  {
-    "activity": "Absent",
-    "category": "Absent",
-    "code": "ABSENT",
-    "desc": "Ijin",
-    "kode": 101
-  },
-  {
-    "activity": "Absent",
-    "category": "Absent",
-    "code": "ABSENT",
-    "desc": "Sakit",
-    "kode": 102
-  },
-  {
-    "activity": "Absent",
-    "category": "Absent",
-    "code": "ABSENT",
-    "desc": "Alpha",
-    "kode": 103
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Class training",
-    "kode": 200
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "OJT",
-    "kode": 201
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "OJT Teaching",
-    "kode": 202
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "SOMP Presentation",
-    "kode": 203
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "SOMP Practical",
-    "kode": 204
-  },
-  {
-    "activity": "Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Tes TIO/ SIMPER",
-    "kode": 205
-  },
-  {
-    "activity": "Non Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Mentor In-class",
-    "kode": 211
-  },
-  {
-    "activity": "Non Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Mentor Practical",
-    "kode": 212
-  },
-  {
-    "activity": "Non Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Self Learning",
-    "kode": 213
-  },
-  {
-    "activity": "Non Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Sit-in In-class",
-    "kode": 214
-  },
-  {
-    "activity": "Non Formal Development",
-    "category": "Development",
-    "code": "DEV",
-    "desc": "Sit-in Practical",
-    "kode": 215
-  },
-  {
-    "activity": "Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Class training",
-    "kode": 300
-  },
-  {
-    "activity": "Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Formal OJI (mandatori)",
-    "kode": 301
-  },
-  {
-    "activity": "Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Penguji ujian praktek",
-    "kode": 302
-  },
-  {
-    "activity": "Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Penguji SOMP",
-    "kode": 303
-  },
-  {
-    "activity": "Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Penguji OJT",
-    "kode": 304
-  },
-  {
-    "activity": "Non Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Guidance troubleshooting, supervisi, konsultasi teknik (lapangan atau melalui telepon)",
-    "kode": 305
-  },
-  {
-    "activity": "Non Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Mengisi forum materi (forum jumatan, seminar, mentor pagi dan sejenisnya)",
-    "kode": 306
-  },
-  {
-    "activity": "Non Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "CSR (Kunjungan kerja sekolah dan semacamnya)",
-    "kode": 307
-  },
-  {
-    "activity": "Non Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "CSR (Program kerja SOBAT dan semacamnya)",
-    "kode": 308
-  },
-  {
-    "activity": "Non Formal Teaching",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Pengisi mentor",
-    "kode": 309
-  },
-  {
-    "activity": "Travel",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Perjalanan berangkat dan pulang mengajar/ OJI dan pekerjaan JI lainnya",
-    "kode": 310
-  },
-  {
-    "activity": "Travel",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Menunggu transportasi sehubungan dengan mengajar/ OJI dan pekerjaan JI lainnya",
-    "kode": 311
-  },
-  {
-    "activity": "Reporting",
-    "category": "JA Instructional",
-    "code": "JI",
-    "desc": "Pembuatan laporan hasil training (termasuk presentasi)",
-    "kode": 312
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Handout training / seminar (membuat atau validasi)",
-    "kode": 400
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Foil training / presentasi (membuat atau validasi)",
-    "kode": 401
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Soal training (membuat atau validasi)",
-    "kode": 402
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Training program dan kelengkapannya (membuat atau validasi)",
-    "kode": 403
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Material Training (animasi, simulator, cutaway, video dan sejenisnya)",
-    "kode": 404
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "CSR (Meeting / Buat sylabus SOBAT)",
-    "kode": 405
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Improve training facility ( komponen atau hal yang berkaitan dengan pengajaran ) ",
-    "kode": 406
-  },
-  {
-    "activity": "Develop Training Aid",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Membuat artikel, technical tips, jurnal, makalah, SOP dan sejenisnya",
-    "kode": 407
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Koordinasi pelaksanaan dan implementasi training",
-    "kode": 410
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Koordinasi pelaksanaan mentor mekanik (mencari hot issue dan pembuatan schedule mentor)",
-    "kode": "411"
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Koordinasi pelaksanaan development team Tera",
-    "kode": 412
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Koordinasi pelaksanaan development team expert",
-    "kode": 413
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Visit (membuat achivement dan PICA, share program ke superior)",
-    "kode": 414
-  },
-  {
-    "activity": "Mentorium",
-    "category": "JA Non Instructional",
-    "code": "JNI",
-    "desc": "Pekerjaan Mentorium lainnya",
-    "kode": 415
-  }
-]
+{
+  "data": [
+    {
+      "activity": "Absent",
+      "category": "Absent",
+      "code": "ABSENT",
+      "desc": "Cuti (Tahunan, Site)",
+      "kode": "100"
+    },
+    {
+      "activity": "Absent",
+      "category": "Absent",
+      "code": "ABSENT",
+      "desc": "Ijin",
+      "kode": "101"
+    },
+    {
+      "activity": "Absent",
+      "category": "Absent",
+      "code": "ABSENT",
+      "desc": "Sakit",
+      "kode": "102"
+    },
+    {
+      "activity": "Absent",
+      "category": "Absent",
+      "code": "ABSENT",
+      "desc": "Alpha",
+      "kode": "103"
+    },
+    {
+      "activity": "Formal Development",
+      "category": "Development",
+      "code": "DEV",
+      "desc": "Class training",
+      "kode": "200"
+    },
+    {
+      "activity": "Formal Development",
+      "category": "Development",
+      "code": "DEV",
+      "desc": "OJT",
+      "kode": "201"
+    },
+    {
+      "activity": "Formal Development",
+      "category": "Development",
+      "code": "DEV",
+      "desc": "OJT Teaching",
+      "kode": "202"
+    }
+  ]
+}
