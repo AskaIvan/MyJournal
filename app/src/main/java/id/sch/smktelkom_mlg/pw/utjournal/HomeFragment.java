@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,6 +36,7 @@ import id.sch.smktelkom_mlg.pw.utjournal.Model.Journal;
 public class HomeFragment extends Fragment {
 
     private FloatingActionButton fab_create;
+    private SearchView searchView;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private ProgressDialog progressDialog;
@@ -60,6 +62,8 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
+
+        setHasOptionsMenu(true);
 
         myDataUser = FirebaseDatabase.getInstance().getReference().child("journal");
 
@@ -93,21 +97,6 @@ public class HomeFragment extends Fragment {
             }
         };
 
-        /*ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-                myDataUser.child(journal_key).removeValue();
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerviewku);*/
-
 
         fab_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +108,51 @@ public class HomeFragment extends Fragment {
 
         return rootview;
     }
+
+    /*@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        final MenuItem item = menu.add("Search");
+        item.setIcon(R.drawable.ic_search_black_24dp); // sets icon
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        final SearchView sv = new SearchView(getActivity());
+
+        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) sv.findViewById(id);
+        textView.setHint("Search here...");
+        textView.setHintTextColor(getResources().getColor(R.color.white));
+
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!searchView.isIconified()){
+                    searchView.setIconified(true);
+                }
+                item.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final List<Journal> filtermodelist = filter(mJournalku,newText);
+
+
+                return false;
+            }
+        });
+        item.setActionView(sv);
+        //super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private List<Journal> filter(List<Journal> pl,String query){
+        query = query.toLowerCase();
+        final List<Journal> filteredModelList = new ArrayList<>();
+        for (Journal model:pl){
+            final String text = model.getRemark().toLowerCase();
+            if (text.startsWith(query)){
+                filteredModelList.add(model);
+            }
+        }
+    }*/
 
     @Override
     public void onStart() {
@@ -151,7 +185,7 @@ public class HomeFragment extends Fragment {
 
                 final String journal_key = getRef(position).getKey();
 
-                holder.setActivity(model.getActivity());
+                holder.setActivity(model.getRemark());
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
 
@@ -201,7 +235,7 @@ public class HomeFragment extends Fragment {
                 final String journal_key = getRef(position).getKey();
 
 
-                holder.setActivity(model.getActivity());
+                holder.setActivity(model.getRemark());
                 holder.setStart(model.getStart());
                 holder.setEnd(model.getEnd());
 

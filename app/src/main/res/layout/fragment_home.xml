@@ -5,9 +5,20 @@
     android:layout_height="match_parent"
     tools:context="id.sch.smktelkom_mlg.pw.utjournal.HomeFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/journal_list"
