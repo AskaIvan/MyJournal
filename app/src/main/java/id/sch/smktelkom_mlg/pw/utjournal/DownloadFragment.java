@@ -84,7 +84,7 @@ public class DownloadFragment extends Fragment {
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
         myDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
-        ijournal = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
+        ijournal = FirebaseDatabase.getInstance().getReference("journal/" + userID).child(userID);
         //startDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
         //endDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
 

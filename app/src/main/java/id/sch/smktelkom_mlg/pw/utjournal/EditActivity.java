@@ -32,10 +32,12 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        mJournal_key = getIntent().getExtras().getString("journalid");
-        Log.d("ini key", "keynya" + mJournal_key);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("journal");
+
         auth = FirebaseAuth.getInstance();
+        mJournal_key = getIntent().getExtras().getString("journalid");
+        String user_id = auth.getCurrentUser().getUid();
+        Log.d("ini key", "keynya" + mJournal_key);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("journal").child(user_id);
 
 
         edtcodejob = findViewById(R.id.edtcodejob1);

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "372016673492-db6rq20mniqs7jh5ajd7gt3ojp5id8ve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.sch.smktelkom_mlg.pw.utjournal",
+            "certificate_hash": "9fe7ee53b0df5e18cbb1f288d8d15f818fcc4d7e"
+          }
+        },
+        {
           "client_id": "372016673492-bhusdg1km4ml3dvfnqgdtiq1lut8os0c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
