@@ -6,15 +6,19 @@ package id.sch.smktelkom_mlg.pw.utjournal;
 
 public class Config {
 
-    public static final String DATA_URL = "https://api.myjson.com/bins/ofq4h";
+    public static final String DATA_URL = "http://www.json-generator.com/api/json/get/bPXyJVxkmW?indent=2";
 
-    //Tags used in the JSON String
+    //Tags used in the JSON String data
     public static final String TAG_ACTIVITY = "activity";
     public static final String TAG_CATEGORY = "category";
     public static final String TAG_CODE = "code";
     public static final String TAG_DESC = "desc";
     public static final String TAG_KODE = "kode";
 
-    //JSON array name
+    public static final String TAG_UNIT = "unittype";
+    public static final String TAG_SAP = "sapsomp";
+
+    //JSON array name data
     public static final String JSON_ARRAY = "data";
+    public static final String JSON_ARRAY_SAP = "dataunit";
 }

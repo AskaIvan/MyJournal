@@ -52,9 +52,9 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
     private DatabaseReference journal, myDatabaseUser;
     private FirebaseDatabase database;
 
-    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtsapsomp, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
+    private EditText edtcodejob, edtcategory, edtcodecategory, edtactivity, edtstart, edtend, edthours, edtunittype, edtremark, edMonth;
     private Spinner spinnerVenue, spinnerVendor, spinnerCodeJob;
-    private Spinner edtDescription;
+    private Spinner edtDescription, edtsapsomp;
     private Button btnadd;
     private int mYear, mMonth, mDay;
     private ProgressDialog mProgress;
@@ -62,8 +62,8 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
     private FirebaseUser CUser;
     private FirebaseAuth.AuthStateListener authListener;
     private String mpost_key = null;
-    private ArrayList<String> desc;
-    private JSONArray data;
+    private ArrayList<String> desc, sap;
+    private JSONArray data, datasap;
 
 
     @Override
@@ -101,6 +101,7 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         auth = FirebaseAuth.getInstance();
 
         desc = new ArrayList<String>();
+        sap = new ArrayList<String>();
         edtDescription.setOnItemSelectedListener(this);
 
         mProgress = new ProgressDialog(this);
@@ -283,9 +284,11 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
 
                             //Storing the Array of JSON String to our JSON Array
                             data = j.getJSONArray(Config.JSON_ARRAY);
+                            datasap = j.getJSONArray(Config.JSON_ARRAY_SAP);
                             Log.d("asow", "asowlah" + data);
 
                             //Calling method getStudents to get the students from the JSON Array
+                            getsap(datasap);
                             getDesc(data);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -304,6 +307,25 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
+    }
+
+    private void getsap(JSONArray j) {
+        for (int i = 0; i < j.length(); i++) {
+            try {
+                //Getting json object
+                JSONObject json = j.getJSONObject(i);
+
+                //Adding the name of the student to array list
+                sap.add(json.getString(Config.TAG_SAP));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Setting adapter to show the items in the spinner
+        //ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, desc);
+        //edtDescription.setAdapter(adapter3);
+        edtsapsomp.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.txt, sap));
     }
 
     private void getDesc(JSONArray j) {
@@ -385,30 +407,20 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         return kode;
     }
 
-    /*public ArrayList<String> getDatas(String filename) {
-        JSONArray jsonArray = null;
-        ArrayList<String> cList = new ArrayList<String>();
+    private String getUnit(int position) {
+        String kode = "";
         try {
-            InputStream inputStream = getResources().getAssets().open(filename);
-            int size = inputStream.available();
-            byte[] data = new byte[size];
-            inputStream.read(data);
-            inputStream.close();
-            final String json = new String(data, "UTF-8");
-            jsonArray = new JSONArray(json);
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    cList.add(jsonArray.getJSONObject(i).getString("desc"));
-                    //edtcategory.setText(jsonArray.getJSONArray(i).getString(Integer.parseInt("category")));
-                }
-            }
-        } catch (IOException e) {
+            //Getting object of given index
+            JSONObject json = datasap.getJSONObject(position);
+
+            //Fetching name from that object
+            kode = json.getString(Config.TAG_UNIT);
+        } catch (JSONException e) {
             e.printStackTrace();
-        } catch (JSONException je) {
-            je.printStackTrace();
         }
-        return cList;
-    }*/
+        //Returning the name
+        return kode;
+    }
 
     public void checkNetworkConnection() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -448,7 +460,7 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         final String mCodecategory = edtcodecategory.getText().toString().trim();
         final String mActivity = edtactivity.getText().toString().trim();
         final String mDescription = edtDescription.getSelectedItem().toString().trim();
-        final String mSapsomp = edtsapsomp.getText().toString().trim();
+        final String mSapsomp = edtsapsomp.getSelectedItem().toString().trim();
         //final String mMonth = edMonth.getText().toString().trim();
         final String mStart = edtstart.getText().toString().trim();
         final String mEnd = edtend.getText().toString().trim();
@@ -514,11 +526,6 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
                     Toast.LENGTH_SHORT).show();
         }
 
-        //private void addJournal(final String codejob, final String category, final String codecategory, final String activity, final String description, final String sapsomp, final String month, final String start, final String end, final String hours, final String venue, final String vendor, final String unittype, final String remark) {
-        //  Journal journal = new Journal(codejob, category, codecategory, activity, description, sapsomp, month, start, end, hours, venue, vendor, unittype, remark);
-
-        //journal.child(journals).
-
 
     }
 
@@ -528,6 +535,7 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         edtcategory.setText(getCategory(position));
         edtcodecategory.setText(getCode(position));
         edtactivity.setText(getActivity(position));
+        edtunittype.setText(getUnit(position));
     }
 
     @Override
@@ -536,6 +544,7 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         edtcategory.setText("");
         edtcodecategory.setText("");
         edtactivity.setText("");
+        edtunittype.setText("");
     }
 }
 

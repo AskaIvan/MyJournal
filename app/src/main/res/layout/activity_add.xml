@@ -90,16 +90,6 @@
                     android:inputType="text" />
 
                 <EditText
-                    android:id="@+id/edtsapsomp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/edittextstyle"
-                    android:hint="@string/sapsomp"
-                    android:inputType="text" />
-
-                <EditText
                     android:id="@+id/edtstart"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -161,6 +151,16 @@
                     android:layout_marginTop="24dp"
                     android:background="@drawable/edittextstyle" />
 
+                <Spinner
+                    android:id="@+id/edtsapsomp"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="@string/sapsomp"
+                    android:inputType="text" />
+
                 <EditText
                     android:id="@+id/edtunit"
                     android:layout_width="300dp"
@@ -168,18 +168,22 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/edittextstyle"
+                    android:editable="false"
+                    android:focusable="false"
                     android:hint="@string/unittype"
                     android:inputType="text" />
 
                 <EditText
                     android:id="@+id/edtremark"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="128dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/edittextstyle"
+                    android:gravity="top"
                     android:hint="@string/remark"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:lines="3" />
 
                 <Button
                     android:id="@+id/btnAdd"
