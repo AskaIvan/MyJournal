@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,12 +26,16 @@ public class EditActivity extends AppCompatActivity {
 
     private Button btndelete;
     private FirebaseAuth auth;
+    
+    private Toolbar myToolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_view);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         mJournal_key = getIntent().getExtras().getString("journalid");
         Log.d("ini key", "keynya" + mJournal_key);
@@ -52,6 +57,7 @@ public class EditActivity extends AppCompatActivity {
         edtVendor = findViewById(R.id.edtVendor1);
         edtunittype = findViewById(R.id.edtunit1);
         edtremark = findViewById(R.id.edtremark1);
+         
 
         btndelete = findViewById(R.id.btnDelete1);
 
@@ -112,5 +118,8 @@ public class EditActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void setSupportActionBar(Toolbar myToolbar) {
     }
 }
