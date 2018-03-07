@@ -84,7 +84,7 @@ public class DownloadFragment extends Fragment {
         FirebaseUser userid = auth.getCurrentUser();
         String userID = userid.getUid();
         myDataUser = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
-        ijournal = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
+        ijournal = FirebaseDatabase.getInstance().getReference("journal/" + userID).child(userID);
         //startDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
         //endDate = FirebaseDatabase.getInstance().getReference().child("journal").child(userID);
 
@@ -176,7 +176,7 @@ public class DownloadFragment extends Fragment {
                     String datenyastart = nEdstart.getText().toString();
                     String datenyaend = nEdend.getText().toString();
                     if (checkPermission()) {
-                        if (!TextUtils.isEmpty(namefile) && !TextUtils.isEmpty(datenyastart)) {
+                        if (!TextUtils.isEmpty(namefile)) {
                             startsave();
                             String namefile1 = nEditFileName.getText().toString();
                             String path = String.valueOf(Environment.getExternalStorageDirectory()) + "/" + namefile1 + ".xls";
@@ -228,9 +228,22 @@ public class DownloadFragment extends Fragment {
         String datestart = nEdstart.getText().toString();
         String dateend = nEdend.getText().toString();
 
+
         String userID = userid.getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("journal");
-        TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart).endAt(userID + "_" + dateend);
+//        if (dateend!=null && datestart!=null){
+//            TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart).endAt(userID + "_" + dateend);
+//        }
+//        else if (dateend==null && datestart!=null){
+//            TqueryJournal = query.orderByChild("uid_start").startAt(userID + "_" + datestart);
+//        }
+//        else if (dateend!=null && datestart==null){
+//            TqueryJournal = query.orderByChild("uid_start").endAt(userID + "_" + datestart);
+//        }
+//        else {
+        TqueryJournal = query.orderByChild("uid").equalTo(userID);
+//        }
+        //TqueryJournal = query.orderByChild("uid").equalTo(userID);
         //Tdate = query.orderByChild("start").startAt(datenya);
 
         TqueryJournal.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,6 +251,7 @@ public class DownloadFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Log.d("nameee", String.valueOf(dataSnapshot.getChildrenCount()));
                 int i = 1;
                 WritableWorkbook myFirstWbook = null;
                 Date currentdate = new Date();
@@ -362,6 +376,8 @@ public class DownloadFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
         Toast.makeText(getContext(), "Download Data Complete!", Toast.LENGTH_LONG).show();
         progressDialog.dismiss();

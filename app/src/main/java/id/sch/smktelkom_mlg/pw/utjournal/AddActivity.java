@@ -74,9 +74,10 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
 
         auth = FirebaseAuth.getInstance();
         CUser = auth.getCurrentUser();
+        String user_id = auth.getCurrentUser().getUid();
 
         database = FirebaseDatabase.getInstance();
-        journal = database.getReference().child("journal");
+        journal = database.getReference("journal/" + user_id);
 
         myDatabaseUser = FirebaseDatabase.getInstance().getReference().child("users").child(CUser.getUid());
 
