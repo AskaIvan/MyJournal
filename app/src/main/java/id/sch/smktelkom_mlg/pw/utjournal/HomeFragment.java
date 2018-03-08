@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), EditActivity.class);
+                        Intent intent = new Intent(getContext(), EditActivity.class);
                         intent.putExtra("journalid", journal_key);
                         startActivity(intent);
                     }
@@ -312,7 +312,7 @@ public class HomeFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), EditActivity.class);
+                        Intent intent = new Intent(getContext(), EditActivity.class);
                         intent.putExtra("journalid", journal_key);
                         startActivity(intent);
                     }

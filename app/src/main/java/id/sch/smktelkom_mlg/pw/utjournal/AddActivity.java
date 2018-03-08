@@ -71,6 +71,12 @@ public class AddActivity extends AppCompatActivity implements Spinner.OnItemSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add Journal");
+
 
         auth = FirebaseAuth.getInstance();
         CUser = auth.getCurrentUser();

@@ -1,10 +1,8 @@
 package id.sch.smktelkom_mlg.pw.utjournal;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -34,15 +32,18 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Detail");
 
 
         auth = FirebaseAuth.getInstance();
         mJournal_key = getIntent().getExtras().getString("journalid");
         String user_id = auth.getCurrentUser().getUid();
         Log.d("ini key", "keynya" + mJournal_key);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("journal").child(user_id);
+        mDatabase = FirebaseDatabase.getInstance().getReference("journal/" + user_id);
 
 
         edtcodejob = findViewById(R.id.edtcodejob1);
@@ -111,7 +112,7 @@ public class EditActivity extends AppCompatActivity {
 
             }
         });
-        btndelete.setOnClickListener(new View.OnClickListener() {
+        /*btndelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDatabase.child(mJournal_key).removeValue();
@@ -119,7 +120,7 @@ public class EditActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
     }
 
     private void setSupportActionBar(Toolbar myToolbar) {
